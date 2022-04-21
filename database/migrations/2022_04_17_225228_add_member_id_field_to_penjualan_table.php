@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('penjualan', function (Blueprint $table) {
-            $table->integer('member_id')->nullable();
+            $table->string('id_customer')->nullable()->after('id');
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('penjualan', function (Blueprint $table) {
-            $table->dropColumn('member_id');
+            $table->dropColumn('id_customer');
         });
     }
 };

@@ -13,4 +13,13 @@ class Penjualan extends Model
     protected $fillable = [
         'total_item', 'total_harga', 'diskon', 'bayar', 'diterima', 'id_user'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'id_user');
+    }
+
+    public function customer(){
+        return $this->belongsTo('App\Models\User', 'id_customer', 'id_customer');
+    }
 }

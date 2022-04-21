@@ -92,15 +92,12 @@
                             <div class="tampil-terbilang">Rp. Tiga Ratus Ribu Rupiah</div>
                         </div>
                         <div class="col-lg-4">
-                            <form action="{{ route('pembelian.store') }}" class="form-penjualan" method="post">
+                            <form action="{{ route('transaksi.simpan') }}" class="form-penjualan" method="post">
                                 @csrf
                                 <input type="hidden" name="id_penjualan" value="{{ $id_penjualan }}">
                                 <input type="hidden" name="total" id="total">
                                 <input type="hidden" name="total_item" id="total_item">
                                 <input type="hidden" name="bayar" id="bayar">
-                                <input type="hidden" name="id_customer"
-                                    value="{{ Auth::user()->role('customer') ? Auth::user()->kode_customer : '' }}"
-                                    id="id_customer">
 
                                 <div class="form-group row">
                                     <label for="totalrp" class="col-lg-4 control-label">Total</label>
@@ -111,8 +108,8 @@
                                 <div class="form-group row">
                                     <label for="customer" class="col-lg-4 control-label">Customer</label>
                                     <div class="col-lg-8">
-                                        <input type="text" id="kode_customer"
-                                            value="{{ Auth::user()->role('customer') ? Auth::user()->kode_customer : '' }}"
+                                        <input type="text" name="id_customer" id="id_customer"
+                                            value="{{ Auth::user()->role('admin') ? ($customerActive->id_customer ?? '') : Auth::user()->id_customer }}"
                                             class="form-control">
                                         @role('admin')
                                             <span class="input-group-btn">
@@ -127,14 +124,14 @@
                                 <div class="form-group row">
                                     <label for="diterima" class="col-lg-4 control-label">Diterima</label>
                                     <div class="col-lg-8">
-                                        <input type="number" name="diterima" value="0" id="diterima"
+                                        <input type="number" name="diterima" value="{{ $penjualan->diterima ?? 0 }}" id="diterima"
                                             class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="diskon" class="col-lg-4 control-label">Diskon</label>
                                     <div class="col-lg-8">
-                                        <input type="number" name="diskon" value="0" id="diskon" class="form-control"
+                                        <input type="number" name="diskon" value="{{ $customerActive->diskon ?? 0 }}" id="diskon" class="form-control"
                                             readonly>
                                     </div>
                                 </div>
@@ -188,7 +185,7 @@
                                             <td>
                                                 <div>
                                                     <a href="#" class="btn btn-primary"
-                                                        onclick="pilihProduct('{{ $product->id }}', {{ $product->kode_barang }})">
+                                                        onclick="pilihProduct('{{ $product->id }}', '{{ $product->kode_barang }}')">
                                                         <i class="fa fa-check-circle"></i>
                                                         Pilih
                                                     </a>
@@ -224,13 +221,13 @@
                                     <tbody>
                                         @foreach ($customers as $customer)
                                             <tr>
-                                                <td>{{ $customer->kode_customer }}</td>
+                                                <td>{{ $customer->id_customer }}</td>
                                                 <td>{{ $customer->name }}</td>
                                                 <td>{{ $customer->email }}</td>
                                                 <td>
                                                     <div>
                                                         <a href="#" class="btn btn-primary"
-                                                            onclick="pilihCustomer('{{ $customer->id }}', '{{ $customer->kode_customer }}')">
+                                                            onclick="pilihCustomer('{{ $customer->id_customer }}')">
                                                             <i class="fa fa-check-circle"></i>
                                                             Pilih
                                                         </a>
@@ -308,6 +305,9 @@
                 dom: "Brt",
             }).on('draw.dt', function() {
                 loadForm($('#diskon').val());
+                setTimeout(() => {
+                    $('#diterima').trigger('keyup');
+                }, 300);
             });
 
             $("#table-product").DataTable({
@@ -347,6 +347,7 @@
                     },
                     success: function(data) {
                         table_trans.ajax.reload();
+                        loadForm($('#diskon').val());
                     }
                 });
             });
@@ -378,10 +379,8 @@
                 tambahProduct();
             }
 
-            function pilihCustomer(id, kode) {
-                // console.log(id, kode);
-                $('#id_customer').val(id);
-                $('#kode_customer').val(kode);
+            function pilihCustomer(kode) {
+                $('#id_customer').val(kode);
                 $('#diterima').val(0).focus().select();
                 $('#modal-customer').modal('hide');
             }
@@ -391,6 +390,7 @@
                     .done(response => {
                         $('#kode_produk').focus();
                         table_trans.ajax.reload();
+                        loadForm($('#diskon').val());
                     })
                     .fail(errors => {
                         alert('Tidak dapat menyimpan data');
@@ -427,6 +427,7 @@
                                     table_trans
                                         .ajax
                                         .reload();
+                                    loadForm($('#diskon').val());
                                 }
                             });
                         }

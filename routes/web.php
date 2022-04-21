@@ -51,7 +51,14 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         Route::get('/pembelian-detail/loadform/{diskon}/{total}', [App\Http\Controllers\PembelianDetailController::class, 'loadform'])->name('pembelian_detail.loadform');
     });
 
+    Route::get('penjualan', [App\Http\Controllers\PenjualanController::class, 'index'])->name('penjualan.index');
+    Route::get('penjualan/data', [App\Http\Controllers\PenjualanController::class, 'data'])->name('penjualan.data');
+    Route::get('penjualan/{id}', [App\Http\Controllers\PenjualanController::class, 'show'])->name('penjualan.show');
+    Route::delete('penjualan/{id}/delete', [App\Http\Controllers\PenjualanController::class, 'destroy'])->name('penjualan.delete');
+
     Route::get('/transaksi/new', [App\Http\Controllers\PenjualanController::class, 'create'])->name('transaksi.new');
+    Route::post('/transaksi/simpan', [App\Http\Controllers\PenjualanController::class, 'store'])->name('transaksi.simpan');
+
     Route::get('/transaksi/show/{id}', [App\Http\Controllers\PenjualanDetailController::class, 'show'])->name('transaksi.show');
     Route::get('/transaksi', [App\Http\Controllers\PenjualanDetailController::class, 'index'])->name('transaksi.index');
     Route::post('/transaksi/store', [App\Http\Controllers\PenjualanDetailController::class, 'store'])->name('transaksi.store');

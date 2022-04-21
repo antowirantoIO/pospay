@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Penjualan;
+use Illuminate\Http\Request;
+use App\Models\PenjualanDetail;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePenjualanRequest;
 use App\Http\Requests\UpdatePenjualanRequest;
@@ -16,7 +19,9 @@ class PenjualanController extends Controller
      */
     public function index()
     {
-        //
+        $penjualan = Penjualan::orderBy('id', 'desc')->get();
+
+        return view('penjualan.index', compact('penjualan'));
     }
 
     /**
@@ -27,7 +32,7 @@ class PenjualanController extends Controller
     public function create()
     {
         $penjualan = new Penjualan();
-        $penjualan->member_id = Auth::user()->hasRole('customer') ? Auth::user()->id : null;
+        $penjualan->id_customer = Auth::user()->hasRole('customer') ? Auth::user()->id : null;
         $penjualan->total_item = 0;
         $penjualan->total_harga = 0;
         $penjualan->diskon = 0;
@@ -50,9 +55,26 @@ class PenjualanController extends Controller
      * @param  \App\Http\Requests\StorePenjualanRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePenjualanRequest $request)
+    public function store(Request $request)
     {
-        //
+        $penjualan = Penjualan::findOrFail($request->id_penjualan);
+        $penjualan->total_item = $request->total_item;
+        $penjualan->id_customer = $request->id_customer;
+        $penjualan->total_harga = $request->total;
+        $penjualan->diskon = $request->diskon;
+        $penjualan->bayar = $request->bayar;
+        $penjualan->diterima = $request->diterima;
+
+        $penjualan->update();
+
+        $detail = PenjualanDetail::where('id_penjualan', $penjualan->id)->get();
+        foreach ($detail as $item) {
+            $product = Product::findOrFail($item->id_product);
+            $product->stok -= $item->jumlah;
+            $product->update();
+        }
+
+        return redirect()->route('penjualan.index');
     }
 
     /**
@@ -61,10 +83,25 @@ class PenjualanController extends Controller
      * @param  \App\Models\Penjualan  $penjualan
      * @return \Illuminate\Http\Response
      */
-    public function show(Penjualan $penjualan)
+    public function show($id)
     {
-        //
+        $detail = PenjualanDetail::with('products')->where('id_penjualan', $id)->get();
+
+        $data = [];
+
+        foreach($detail as $item) {
+            array_push($data, [
+            'kode_barang' => $item->products[0]['kode_barang'],
+            'nama_barang' => $item->products[0]['nama_barang'],
+            'harga_jual' => $item->harga_jual,
+            'jumlah' => $item->jumlah,
+            'subtotal' => $item->subtotal
+            ]);
+        }
+
+        return response()->json($data);
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -95,8 +132,19 @@ class PenjualanController extends Controller
      * @param  \App\Models\Penjualan  $penjualan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Penjualan $penjualan)
+    public function destroy($id)
     {
-        //
+        $penjualan = Penjualan::findOrFail($id);
+        $detail = PenjualanDetail::where('id_penjualan', $penjualan->id)->get();
+        foreach ($detail as $item) {
+            $product = Product::findOrFail($item->id_product);
+            $product->stok += $item->jumlah;
+            $product->update();
+            $item->delete();
+        }
+
+        $penjualan->delete();
+
+        return response(null, 204);
     }
 }

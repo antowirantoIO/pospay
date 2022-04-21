@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Penjualan;
 use Illuminate\Http\Request;
 use App\Models\PenjualanDetail;
 use App\Http\Requests\StorePenjualanDetailRequest;
@@ -22,12 +23,13 @@ class PenjualanDetailController extends Controller
         $customers = User::role('customer')->orderBy('name')->get();
 
         if($id_penjualan = session('id_penjualan')){
-            return view('penjualan_detail.index', compact('products', 'customers', 'id_penjualan'));
+            $penjualan = Penjualan::findOrFail($id_penjualan);
+            $customerActive = $penjualan->customer;
+            return view('penjualan_detail.index', compact('products', 'customers', 'id_penjualan', 'customerActive', 'penjualan'));
         }
 
         return redirect()->route('transaksi.new');
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -36,7 +38,7 @@ class PenjualanDetailController extends Controller
      */
     public function create()
     {
-        $pernjualan = new Penjualan();
+        //
     }
 
     /**
@@ -100,8 +102,8 @@ class PenjualanDetailController extends Controller
             'bayar' => $bayar,
             'bayarrp' => format_uang($bayar),
             'terbilang' => ucwords(terbilang($bayar). ' Rupiah'),
-            'kembalirp' => format_uang(($diterima != 0) ? $bayar - $diterima : 0),
-            'kembali_terbilang' => ucwords(terbilang(($diterima != 0) ? $bayar - $diterima : 0). ' Rupiah'),
+            'kembalirp' => format_uang(($diterima != 0) ? $diterima - $bayar : 0),
+            'kembali_terbilang' => ucwords(terbilang(($diterima != 0) ? $diterima - $bayar : 0). ' Rupiah'),
         ];
 
         return response()->json($data, 200);
@@ -125,9 +127,14 @@ class PenjualanDetailController extends Controller
      * @param  \App\Models\PenjualanDetail  $penjualanDetail
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePenjualanDetailRequest $request, PenjualanDetail $penjualanDetail)
+    public function update(Request $request, $id)
     {
-        //
+        $data = PenjualanDetail::findOrFail($id);
+        $data->jumlah = $request->jumlah;
+        $data->subtotal = $data->harga_jual * $request->jumlah;
+        $data->update();
+
+        return response()->json('Data berhasil diubah', 200);
     }
 
     /**
@@ -136,8 +143,11 @@ class PenjualanDetailController extends Controller
      * @param  \App\Models\PenjualanDetail  $penjualanDetail
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PenjualanDetail $penjualanDetail)
+    public function destroy($id)
     {
-        //
+        $data = PenjualanDetail::findOrFail($id);
+        $data->delete();
+
+        return response()->json('Data berhasil dihapus', 200);
     }
 }

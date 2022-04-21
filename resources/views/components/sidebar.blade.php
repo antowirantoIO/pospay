@@ -14,20 +14,20 @@
                             class="fas fa-fire"></i><span>Dashboard</span></a>
                 </li>
                 <li class="menu-header">Management Data</li>
-                <li class="nav-item {{ request()->segment(2) == 'product' ? 'active' : '' }}">
-                    <a href="{{ route('product.index') }}" class="nav-link"><i class="fas fa-th-large"></i>
-                        <span>Data Barang</span></a>
-                </li>
                 <li class="nav-item {{ request()->segment(2) == 'supplier' ? 'active' : '' }}">
                     <a href="{{ route('supplier.index') }}" class="nav-link"><i class="fas fa-archive"></i>
                         <span>Data Suplayer</span></a>
+                </li>
+                <li class="nav-item {{ request()->segment(2) == 'product' ? 'active' : '' }}">
+                    <a href="{{ route('product.index') }}" class="nav-link"><i class="fas fa-th-large"></i>
+                        <span>Data Barang</span></a>
                 </li>
                 <li class="nav-item {{ request()->segment(2) == 'pembelian' ? 'active' : '' }}">
                     <a href="{{ route('pembelian.index') }}" class="nav-link"><i class="fas fa-archive"></i>
                         <span>Data Pembelian</span></a>
                 </li>
                 <li class="nav-item {{ request()->segment(2) == '' ? 'penjualan' : '' }}">
-                    <a href="#" class="nav-link"><i class="fas fa-shopping-bag"></i>
+                    <a href="{{ route('penjualan.index') }}" class="nav-link"><i class="fas fa-shopping-bag"></i>
                         <span>Data Penjualan</span></a>
                 </li>
             </ul>

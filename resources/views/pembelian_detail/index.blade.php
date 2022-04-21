@@ -170,7 +170,7 @@
                                             <td>
                                                 <div>
                                                     <a href="#" class="btn btn-primary"
-                                                        onclick="pilihProduct('{{ $product->id }}', {{ $product->kode_barang }})">
+                                                        onclick="pilihProduct('{{ $product->id }}', '{{ $product->kode_barang }}')">
                                                         <i class="fa fa-check-circle"></i>
                                                         Pilih
                                                     </a>
@@ -302,6 +302,7 @@
                     .done(response => {
                         $('#kode_produk').focus();
                         table_trans.ajax.reload();
+                        loadForm($('#diskon').val());
                     })
                     .fail(errors => {
                         alert('Tidak dapat menyimpan data');
@@ -334,6 +335,7 @@
                                     table_trans
                                         .ajax
                                         .reload();
+                                        loadForm($('#diskon').val());
                                 }
                             });
                         }
