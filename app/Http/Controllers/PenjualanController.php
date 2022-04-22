@@ -74,6 +74,8 @@ class PenjualanController extends Controller
             $product->update();
         }
 
+        $request->session()->flash('success', 'Transaksi Penjualan tersimpan');
+
         return redirect()->route('penjualan.index');
     }
 
@@ -146,5 +148,28 @@ class PenjualanController extends Controller
         $penjualan->delete();
 
         return response(null, 204);
+    }
+
+    public function notaKecil(){
+        $penjualan = Penjualan::findOrFail(session('id_penjualan'));
+        $detail = PenjualanDetail::with('products')->where('id_penjualan', $penjualan->id)->get();
+
+        $data = [];
+
+        foreach($detail as $item) {
+            array_push($data, [
+            'kode_barang' => $item->products[0]['kode_barang'],
+            'nama_barang' => $item->products[0]['nama_barang'],
+            'harga_jual' => $item->harga_jual,
+            'jumlah' => $item->jumlah,
+            'subtotal' => $item->subtotal
+            ]);
+        }
+
+        return view('penjualan.nota-kecil', compact('penjualan', 'data'));
+    }
+
+    public function notaBesar(){
+
     }
 }

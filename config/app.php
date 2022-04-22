@@ -125,6 +125,10 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'tipe_nota' => 0,
+
+    'alamat' => "Jl. Rumah Sakit Pasar Manis Ciamis Blok D, Komplek Pasar No.41 ",
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

@@ -24,6 +24,14 @@
                         <div class="alert alert-success">
                             {{ session('success') }}
                         </div>
+                        <div class="pb-2">
+                            @if (config('app.tipe_nota') == 0)
+                                <button onclick="notaKecil()" class="btn btn-primary">Cetak Nota</button>
+                            @else
+                                <button onclick="notaBesar()" class="btn btn-primary">Cetak Nota</button>
+                            @endif
+                            <a href="{{ route('transaksi.new') }}" class="btn btn-primary">Transaksi Pemjualan Baru</a>
+                        </div>
                     @endif
                     <div class="table-responsive">
                         <table class="table table-striped" id="table-data">
@@ -192,6 +200,30 @@
                         });
                     }
                 });
+            }
+
+            function notaKecil(){
+                popupCenter('{{ route('transaksi.notaKecil') }}', 'Nota Kecil PDF', 720, 674);
+            }
+
+            function notaBesar(){
+                popupCenter('{{ route('transaksi.notaBesar') }}', 'Nota Kecil PDF', 720, 674);
+            }
+
+            function popupCenter(url, title, w, h) {
+                var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+                var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+                var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+                var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+                var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+                var top = ((height / 2) - (h / 2)) + dualScreenTop;
+                var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+                if (window.focus) {
+                    newWindow.focus();
+                }
             }
         </script>
     </x-slot>

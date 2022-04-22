@@ -51,6 +51,9 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         Route::get('/pembelian-detail/loadform/{diskon}/{total}', [App\Http\Controllers\PembelianDetailController::class, 'loadform'])->name('pembelian_detail.loadform');
     });
 
+    Route::get('transaksi/nota-kecil', [App\Http\Controllers\PenjualanController::class, 'notaKecil'])->name('transaksi.notaKecil');
+    Route::get('transaksi/nota-besar', [App\Http\Controllers\PenjualanController::class, 'notaBesar'])->name('transaksi.notaBesar');
+
     Route::get('penjualan', [App\Http\Controllers\PenjualanController::class, 'index'])->name('penjualan.index');
     Route::get('penjualan/data', [App\Http\Controllers\PenjualanController::class, 'data'])->name('penjualan.data');
     Route::get('penjualan/{id}', [App\Http\Controllers\PenjualanController::class, 'show'])->name('penjualan.show');
