@@ -22,4 +22,9 @@ class Penjualan extends Model
     public function customer(){
         return $this->belongsTo('App\Models\User', 'id_customer', 'id_customer');
     }
+
+    public function detail_penjualan()
+    {
+        return $this->hasMany('App\Models\PenjualanDetail', 'id_penjualan');
+    }
 }

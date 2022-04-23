@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Pembelian;
+use App\Models\Penjualan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +15,35 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/data', function () {
+    $penjualan = Penjualan::whereBetween('created_at', ['2022-04-01', '2022-04-30'])->get();
+    $pembelian = Pembelian::whereBetween('created_at', ['2022-04-01', '2022-04-30'])->get();
+
+    $modal = 0;
+    $pemasukan = 0;
+    $pengeluaran = 0;
+
+    foreach ($pembelian as $item) {
+        $pengeluaran += $item->bayar;
+    }
+
+    foreach($penjualan as $p){
+        foreach ($p->detail_penjualan as $dp) {
+            $modal += $dp->products[0]->harga_beli * $dp->jumlah;
+        }
+        $pemasukan += $p->bayar;
+    }
+
+    return [
+        'penjualan' => $penjualan,
+        'pembelian' => $pembelian,
+        'pengeluaran' => $pengeluaran,
+        'modal' => $modal,
+        'pemasukan' => $pemasukan,
+        'estimated' => $modal + $pemasukan - $pengeluaran
+    ];
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,6 +81,8 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         Route::delete('/pembelian-detail/{id}/delete', [App\Http\Controllers\PembelianDetailController::class, 'destroy'])->name('pembelian_detail.delete');
         Route::get('/pembelian-detail/loadform/{diskon}/{total}', [App\Http\Controllers\PembelianDetailController::class, 'loadform'])->name('pembelian_detail.loadform');
     });
+
+    Route::get('/laporan', [App\Http\Controllers\LaporanController::class, 'index'])->name('laporan.index');
 
     Route::get('transaksi/nota-kecil', [App\Http\Controllers\PenjualanController::class, 'notaKecil'])->name('transaksi.notaKecil');
     Route::get('transaksi/nota-besar', [App\Http\Controllers\PenjualanController::class, 'notaBesar'])->name('transaksi.notaBesar');

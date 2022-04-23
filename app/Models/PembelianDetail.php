@@ -16,4 +16,12 @@ class PembelianDetail extends Model
     public function products(){
         return $this->hasMany('App\Models\Product', 'id', 'id_product');
     }
+
+    public function member(){
+        return $this->belongsTo('App\Models\User', 'id_member', 'id');
+    }
+
+    public function pembelian(){
+        return $this->belongsTo('App\Models\Pembelian', 'id_pembelian', 'id');
+    }
 }

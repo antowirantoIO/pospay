@@ -20,4 +20,8 @@ class PenjualanDetail extends Model
     public function member(){
         return $this->belongsTo('App\Models\User', 'id_member', 'id');
     }
+
+    public function penjualan(){
+        return $this->belongsTo('App\Models\Penjualan', 'id_penjualan', 'id');
+    }
 }
