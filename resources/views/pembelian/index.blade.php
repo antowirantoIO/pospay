@@ -175,7 +175,7 @@
         <script src="https://cdn.jsdelivr.net/npm/datatables.net-select-bs4/js/select.bootstrap4.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert/dist/sweetalert.min.js"></script>
         <script src="https://cdn.jsdelivr.net/prismjs/prism.js"></script>
-        <script src="/assets/js/page/modules-datatables.js"></script>
+        <script src="{{ asset('assets/js/page/modules-datatables.js') }}"></script>
 
         <script>
             $("#table-product").dataTable({

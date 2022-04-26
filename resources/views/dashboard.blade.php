@@ -124,8 +124,8 @@
                 <div class="card-body" id="top-5-scroll">
                     <ul class="list-unstyled list-unstyled-border">
                         <li class="media">
-                            <img class="mr-3 rounded" width="55" src="/assets/img/products/product-3-50.png"
-                                alt="product">
+                            <img class="mr-3 rounded" width="55"
+                                src="{{ asset('assets/img/products/product-3-50.png') }} }}" alt="product">
                             <div class="media-body">
                                 <div class="float-right">
                                     <div class="font-weight-600 text-muted text-small">86 Sales</div>
@@ -144,8 +144,8 @@
                             </div>
                         </li>
                         <li class="media">
-                            <img class="mr-3 rounded" width="55" src="/assets/img/products/product-4-50.png"
-                                alt="product">
+                            <img class="mr-3 rounded" width="55"
+                                src="{{ asset('assets/img/products/product-4-50.png') }}" alt="product">
                             <div class="media-body">
                                 <div class="float-right">
                                     <div class="font-weight-600 text-muted text-small">67 Sales</div>
@@ -164,8 +164,8 @@
                             </div>
                         </li>
                         <li class="media">
-                            <img class="mr-3 rounded" width="55" src="/assets/img/products/product-1-50.png"
-                                alt="product">
+                            <img class="mr-3 rounded" width="55"
+                                src="{{ asset('assets/img/products/product-1-50.png') }}" alt="product">
                             <div class="media-body">
                                 <div class="float-right">
                                     <div class="font-weight-600 text-muted text-small">63 Sales</div>
@@ -184,8 +184,8 @@
                             </div>
                         </li>
                         <li class="media">
-                            <img class="mr-3 rounded" width="55" src="/assets/img/products/product-3-50.png"
-                                alt="product">
+                            <img class="mr-3 rounded" width="55"
+                                src="{{ asset('assets/img/products/product-3-50.png') }}" alt="product">
                             <div class="media-body">
                                 <div class="float-right">
                                     <div class="font-weight-600 text-muted text-small">28 Sales</div>
@@ -204,8 +204,8 @@
                             </div>
                         </li>
                         <li class="media">
-                            <img class="mr-3 rounded" width="55" src="/assets/img/products/product-5-50.png"
-                                alt="product">
+                            <img class="mr-3 rounded" width="55"
+                                src="{{ asset('assets/img/products/product-5-50.png') }}" alt="product">
                             <div class="media-body">
                                 <div class="float-right">
                                     <div class="font-weight-600 text-muted text-small">19 Sales</div>
@@ -249,7 +249,7 @@
                         <div>
                             <div class="product-item pb-3">
                                 <div class="product-image">
-                                    <img alt="image" src="/assets/img/products/product-4-50.png"
+                                    <img alt="image" src="{{ asset('assets/img/products/product-4-50.png') }}"
                                         class="img-fluid">
                                 </div>
                                 <div class="product-details">
@@ -271,7 +271,7 @@
                         <div>
                             <div class="product-item">
                                 <div class="product-image">
-                                    <img alt="image" src="/assets/img/products/product-3-50.png"
+                                    <img alt="image" src="{{ asset('assets/img/products/product-3-50.png') }}"
                                         class="img-fluid">
                                 </div>
                                 <div class="product-details">
@@ -293,7 +293,7 @@
                         <div>
                             <div class="product-item">
                                 <div class="product-image">
-                                    <img alt="image" src="/assets/img/products/product-1-50.png"
+                                    <img alt="image" src="{{ asset('assets/img/products/product-1-50.png') }}"
                                         class="img-fluid">
                                 </div>
                                 <div class="product-details">
@@ -532,6 +532,6 @@
         <script src="https://cdn.jsdelivr.net/npm/owl.carousel/dist/owl.carousel.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/summernote/dist/summernote-bs4.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chocolat/dist/js/jquery.chocolat.min.js"></script>
-        <script src="/assets/js/page/index.js"></script>
+        <script src="{{ asset('assets/js/page/index.js') }}"></script>
     </x-slot>
 </x-dashboard>

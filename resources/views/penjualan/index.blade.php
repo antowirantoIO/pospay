@@ -45,7 +45,7 @@
                                         </div>
                                     </th>
                                     <th>Tanggal</th>
-                                    <th>Id Customer</th>
+                                    <th>Customer</th>
                                     <th>Total Item</th>
                                     <th>Total Harga</th>
                                     <th>Diskon</th>
@@ -65,7 +65,7 @@
                                             </div>
                                         </td>
                                         <td>{{ tanggal_indonesia($item->created_at) }}</td>
-                                        <td>{{ $item->id_customer }}</td>
+                                        <td>{{ $item->customer->name }}</td>
                                         <td>{{ $item->total_item }}</td>
                                         <td>Rp. {{ number_format($item->total_harga, 0, ',', '.') }}</td>
                                         <td>{{ $item->diskon }} %</td>
@@ -133,7 +133,7 @@
         <script src="https://cdn.jsdelivr.net/npm/datatables.net-select-bs4/js/select.bootstrap4.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert/dist/sweetalert.min.js"></script>
         <script src="https://cdn.jsdelivr.net/prismjs/prism.js"></script>
-        <script src="/assets/js/page/modules-datatables.js"></script>
+        <script src="{{ asset('assets/js/page/modules-datatables.js') }}"></script>
 
         <script>
             $("#table-data").dataTable({

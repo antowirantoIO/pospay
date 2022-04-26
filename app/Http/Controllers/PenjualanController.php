@@ -32,7 +32,7 @@ class PenjualanController extends Controller
     public function create()
     {
         $penjualan = new Penjualan();
-        $penjualan->id_customer = Auth::user()->hasRole('customer') ? Auth::user()->id : null;
+        $penjualan->id_customer = Auth::user()->hasRole('customer') ? Auth::user()->id_customer : null;
         $penjualan->total_item = 0;
         $penjualan->total_harga = 0;
         $penjualan->diskon = 0;

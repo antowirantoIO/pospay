@@ -83,7 +83,7 @@
                                                     <a class="dropdown-item" href="
                                                         {{ route('product.edit', $product->kode_barang) }}"><i
                                                             class="fas fa-edit text-warning pr-2"></i> Edit </a>
-                                                    <a class="dropdown-item" id="button_delete" href="#"><i
+                                                    <a class="dropdown-item btndelete" id="button_delete" href="#"><i
                                                             class="fas fa-trash text-danger pr-2"></i> Delete </a>
                                                     <form id="form_delete"
                                                         action="{{ route('product.delete', $product->kode_barang) }}"
@@ -106,9 +106,9 @@
         <script src="https://cdn.jsdelivr.net/npm/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/datatables.net-select-bs4/js/select.bootstrap4.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert/dist/sweetalert.min.js"></script>
-        <script src="/assets/js/page/modules-datatables.js"></script>
+        <script src="{{ asset('assets/js/page/modules-datatables.js') }}"></script>
         <script>
-            $("#button_delete").click(function() {
+            $(".btndelete").click(function() {
                 swal({
                         title: 'Are you sure?',
                         text: 'Once deleted, you will not be able to recover this product data!',

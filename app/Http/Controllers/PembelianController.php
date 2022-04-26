@@ -91,9 +91,9 @@ class PembelianController extends Controller
             array_push($data, [
             'kode_barang' => $item->products[0]['kode_barang'],
             'nama_barang' => $item->products[0]['nama_barang'],
-            'harga_beli' => $item->harga_beli,
+            'harga_beli' => format_uang($item->harga_beli),
             'jumlah' => $item->jumlah,
-            'subtotal' => $item->subtotal
+            'subtotal' => format_uang($item->subtotal)
             ]);
         }
 
