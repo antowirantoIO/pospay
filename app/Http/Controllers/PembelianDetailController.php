@@ -71,7 +71,7 @@ class PembelianDetailController extends Controller
         $total_item = 0;
 
         foreach ($detail as $key => $item) {
-            $total += format_uang($item->harga_beli * $item->jumlah);
+            $total += $item->harga_beli * $item->jumlah;
             $total_item += $item->jumlah;
         }
 
@@ -96,6 +96,7 @@ class PembelianDetailController extends Controller
             'terbilang' => ucwords(terbilang($bayar). ' Rupiah')
         ];
 
+        return $data;
         return response()->json($data, 200);
     }
 

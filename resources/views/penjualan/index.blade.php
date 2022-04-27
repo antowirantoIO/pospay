@@ -25,12 +25,9 @@
                             {{ session('success') }}
                         </div>
                         <div class="pb-2">
-                            @if (config('app.tipe_nota') == 0)
-                                <button onclick="notaKecil()" class="btn btn-primary">Cetak Nota</button>
-                            @else
-                                <button onclick="notaBesar()" class="btn btn-primary">Cetak Nota</button>
-                            @endif
-                            <a href="{{ route('transaksi.new') }}" class="btn btn-primary">Transaksi Pemjualan Baru</a>
+                            <button onclick="cetakNotas()" class="btn btn-primary">Cetak Nota</button>
+                            <a href="{{ route('transaksi.new') }}" class="btn btn-primary">Transaksi Pemjualan
+                                Baru</a>
                         </div>
                     @endif
                     <div class="table-responsive">
@@ -65,7 +62,7 @@
                                             </div>
                                         </td>
                                         <td>{{ tanggal_indonesia($item->created_at) }}</td>
-                                        <td>{{ $item->customer->name }}</td>
+                                        <td>{{ $item->customer->name ?? '' }}</td>
                                         <td>{{ $item->total_item }}</td>
                                         <td>Rp. {{ number_format($item->total_harga, 0, ',', '.') }}</td>
                                         <td>{{ $item->diskon }} %</td>
@@ -82,6 +79,11 @@
                                                         onclick="showDetails('{{ route('penjualan.show', $item->id) }}')"
                                                         href="
                                                         #"><i class="fas fa-eye text-info pr-2"></i> Show </a>
+                                                    <a class="dropdown-item"
+                                                        onclick="cetakNota('{{ $item->id }}')" href="
+                                                        #"><i class="fas fa-file-invoice text-primary pr-2"></i> Cetak
+                                                        Nota
+                                                    </a>
                                                     <a class="dropdown-item"
                                                         onclick="deleteDetails('{{ route('penjualan.delete', $item->id) }}')"
                                                         href="
@@ -202,24 +204,27 @@
                 });
             }
 
-            function notaKecil(){
-                popupCenter('{{ route('transaksi.notaKecil') }}', 'Nota Kecil PDF', 720, 674);
+            function cetakNotas() {
+                popupCenter('{{ route('transaksi.cetakNota') }}', 'Nota Kecil PDF', 720, 674);
             }
 
-            function notaBesar(){
-                popupCenter('{{ route('transaksi.notaBesar') }}', 'Nota Kecil PDF', 720, 674);
+            function cetakNota(id) {
+                popupCenter(`{{ url('/dashboard/transaksi/nota?id_penjualan=${id}') }}`, 'Nota PDF', 720, 674);
             }
 
             function popupCenter(url, title, w, h) {
                 var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
                 var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
 
-                var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-                var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+                var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document
+                    .documentElement.clientWidth : screen.width;
+                var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document
+                    .documentElement.clientHeight : screen.height;
 
                 var left = ((width / 2) - (w / 2)) + dualScreenLeft;
                 var top = ((height / 2) - (h / 2)) + dualScreenTop;
-                var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+                var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top +
+                    ', left=' + left);
 
                 if (window.focus) {
                     newWindow.focus();

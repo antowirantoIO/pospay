@@ -89,8 +89,8 @@ class PembelianController extends Controller
 
         foreach($detail as $item) {
             array_push($data, [
-            'kode_barang' => $item->products[0]['kode_barang'],
-            'nama_barang' => $item->products[0]['nama_barang'],
+            'kode_barang' => $item->products->kode_barang,
+            'nama_barang' => $item->products->nama_barang,
             'harga_beli' => format_uang($item->harga_beli),
             'jumlah' => $item->jumlah,
             'subtotal' => format_uang($item->subtotal)

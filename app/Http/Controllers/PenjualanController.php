@@ -19,7 +19,7 @@ class PenjualanController extends Controller
      */
     public function index()
     {
-        $penjualan = Penjualan::orderBy('id', 'desc')->get();
+        $penjualan = Penjualan::with('customer')->orderBy('id', 'desc')->get();
 
         return view('penjualan.index', compact('penjualan'));
     }
@@ -93,8 +93,8 @@ class PenjualanController extends Controller
 
         foreach($detail as $item) {
             array_push($data, [
-            'kode_barang' => $item->products[0]['kode_barang'],
-            'nama_barang' => $item->products[0]['nama_barang'],
+            'kode_barang' => $item->products->kode_barang,
+            'nama_barang' => $item->products->nama_barang,
             'harga_jual' => $item->harga_jual,
             'jumlah' => $item->jumlah,
             'subtotal' => $item->subtotal
@@ -150,8 +150,12 @@ class PenjualanController extends Controller
         return response(null, 204);
     }
 
-    public function notaKecil(){
-        $penjualan = Penjualan::findOrFail(session('id_penjualan'));
+    public function cetakNota(Request $request){
+        $id_penjualan = session('id_penjualan');
+        if($request->id_penjualan){
+            $id_penjualan = $request->id_penjualan;
+        }
+        $penjualan = Penjualan::findOrFail($id_penjualan);
         $detail = PenjualanDetail::with('products')->where('id_penjualan', $penjualan->id)->get();
 
         $data = [];
@@ -166,10 +170,6 @@ class PenjualanController extends Controller
             ]);
         }
 
-        return view('penjualan.nota-kecil', compact('penjualan', 'data'));
-    }
-
-    public function notaBesar(){
-
+        return view('penjualan.nota', compact('penjualan', 'data'));
     }
 }

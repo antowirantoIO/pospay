@@ -14,7 +14,7 @@ class PembelianDetail extends Model
     ];
 
     public function products(){
-        return $this->hasMany('App\Models\Product', 'id', 'id_product');
+        return $this->belongsTo('App\Models\Product', 'id_product', 'id');
     }
 
     public function member(){

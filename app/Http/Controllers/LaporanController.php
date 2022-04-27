@@ -10,37 +10,54 @@ class LaporanController extends Controller
 {
     public function index()
     {
-        return view('laporan.index', [
-            'data' => $this->_getDataMonth(),
-        ]);
+        $tanggalAwal = date('Y-m-d', mktime(0, 0, 0, date('m'), 1, date('Y')));
+        $tanggalAkhir = date('Y-m-d');
+        return view('laporan.index', compact('tanggalAwal', 'tanggalAkhir'));
     }
 
-    private function _getDataMonth(){
-        $penjualan = Penjualan::whereBetween('created_at', ['2022-04-01', '2022-04-30'])->get();
-        $pembelian = Pembelian::whereBetween('created_at', ['2022-04-01', '2022-04-30'])->get();
-
-        $modal = 0;
-        $pemasukan = 0;
+    public function getDataMonth($tanggalAwal, $tanggalAkhir){
+        $no = 0;
+        $data = [];
+        $pendapatan = 0;
         $pengeluaran = 0;
+        $total_pendapatan = 0;
 
-        foreach ($pembelian as $item) {
-            $pengeluaran += $item->bayar;
+        while (strtotime($tanggalAwal) <= strtotime($tanggalAkhir)) {
+            $tanggal = $tanggalAwal;
+            $tanggalAwal = date('Y-m-d', strtotime("+1 day", strtotime($tanggalAwal)));
+
+            $total_penjualan = Penjualan::where('created_at', 'LIKE', "%$tanggal%")->sum('bayar');
+            $total_pembelian = Pembelian::where('created_at', 'LIKE', "%$tanggal%")->sum('bayar');
+
+            $pendapatan = $total_penjualan - $total_pembelian;
+            $total_pendapatan += $pendapatan;
+
+            $row = [
+                'no' => ++$no,
+                'tanggal' => date('d F Y', strtotime($tanggal)),
+                'total_penjualan' => format_uang($total_penjualan),
+                'total_pembelian' => format_uang($total_pembelian),
+                'pendapatan' => format_uang($pendapatan),
+            ];
+
+            $data[] = $row;
         }
 
-        foreach($penjualan as $p){
-            foreach ($p->detail_penjualan as $dp) {
-                $modal += $dp->products[0]->harga_beli * $dp->jumlah;
-            }
-            $pemasukan += $p->bayar;
-        }
-
-        return [
-            'penjualan' => $penjualan,
-            'pembelian' => $pembelian,
-            'pengeluaran' => format_uang($pengeluaran),
-            'modal' => format_uang($modal),
-            'pemasukan' => format_uang($pemasukan),
-            'estimated' => format_uang(($modal - $pengeluaran) + $pemasukan)
+        $data[] = [
+            'no' => '',
+            'tanggal' => '',
+            'total_penjualan' => '',
+            'total_pembelian' => 'Total Pendapatan',
+            'pendapatan' => format_uang($total_pendapatan),
         ];
+
+        return $data;
+    }
+
+    public function refresh(Request $request){
+        $tanggalAwal = $request->tanggal_mulai;
+        $tanggalAkhir = $request->tanggal_akhir;
+
+        return view('laporan.index', compact('tanggalAwal', 'tanggalAkhir'));
     }
 }

@@ -335,7 +335,7 @@
                                     table_trans
                                         .ajax
                                         .reload();
-                                        loadForm($('#diskon').val());
+                                    loadForm($('#diskon').val());
                                 }
                             });
                         }
@@ -348,6 +348,7 @@
 
                 $.get(`{{ url('/dashboard/pembelian-detail/loadform') }}/${diskon}/${$('.total').text()}`)
                     .done(response => {
+                        // console.log(response);
                         $('#totalrp').val('Rp. ' + response.totalrp);
                         $('#bayarrp').val('Rp. ' + response.bayarrp);
                         $('#bayar').val(response.bayar);

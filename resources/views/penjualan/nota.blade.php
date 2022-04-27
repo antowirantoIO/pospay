@@ -1,59 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Nota Kecil</title>
+    <title>Cetak Nota</title>
 
     <?php
-        $style = '
-        <style>
-        * {
-            font-family: "consolas";
-        }
-        p {
-            display: block;
-            margin: 3px;
-            font-size: 10pt;
-        }
-
-        table td {
-            font-size: 9pt;
-        }
-        .text-center {
-            text-align: center;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        @media print {
-            @page {
-                margin: 0;
-                size: 75mm ';
-        $style .= !empty($_COOKIE['innerHeight']) ? $_COOKIE['innerHeight'] . 'mm;' : '';
-
-        $style .= '
+    $style = '
+            <style>
+            * {
+                font-family: "consolas";
             }
-            html, body {
-                width: 70mm;
+            p {
+                display: block;
+                margin: 3px;
+                font-size: 10pt;
             }
-            .btn-print {
-                display: none;
+
+            table td {
+                font-size: 9pt;
             }
-        }
-    </style>';
+            .text-center {
+                text-align: center;
+            }
+
+            .text-right {
+                text-align: right;
+            }
+
+            @media print {
+                @page {
+                    margin: 0;
+                    size: 75mm ';
+    $style .= !empty($_COOKIE['innerHeight']) ? $_COOKIE['innerHeight'] . 'mm;' : '';
+
+    $style .= '
+                }
+                html, body {
+                    width: 70mm;
+                }
+                .btn-print {
+                    display: none;
+                }
+            }
+        </style>';
     ?>
 
     {!! $style !!}
 </head>
+
 <body>
     <button class="btn-print" onclick="window.print()">Print</button>
     <div class="text-center">
         <h3 style="margin-bottom: 5px;">{{ Str::upper(config('app.name')) }}</p>
-        <p>{{ Str::upper(config('app.alamat')) }}</p>
+            <p>{{ Str::upper(config('app.alamat')) }}</p>
     </div>
     <br>
 
@@ -112,11 +114,13 @@
     <script>
         let body = document.body;
         let html = document.documentElement;
-        let height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+        let height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html
+        .offsetHeight);
 
         let result = ((height + 50) * 0.264583);
 
         document.cookie = 'innerHeight=' + result + '; path=/';
     </script>
 </body>
+
 </html>

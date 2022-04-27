@@ -40,17 +40,19 @@
                     <a href="{{ route('transaksi.new') }}" class="nav-link"><i class="fas fa-archive"></i>
                         <span>Transaksi Baru</span></a>
                 </li>
-                <li class="nav-item {{ request()->segment(2) == 'transaksi' ? 'active' : '' }}">
-                    <a href="{{ route('transaksi.index') }}" class="nav-link"><i
-                            class="fas fa-shopping-bag"></i>
-                        <span>Transaksi Sebelumnya</span></a>
-                </li>
+                @if (session('id_penjualan'))
+                    <li class="nav-item {{ request()->segment(2) == 'transaksi' ? 'active' : '' }}">
+                        <a href="{{ route('transaksi.index') }}" class="nav-link"><i
+                                class="fas fa-shopping-bag"></i>
+                            <span>Transaksi Sebelumnya</span></a>
+                    </li>
+                @endif
             </ul>
             <ul class="sidebar-menu">
                 <li class="menu-header">Laporan</li>
                 <li class="nav-item {{ request()->segment(2) == 'laporan' ? 'active' : '' }}">
                     <a href="{{ route('laporan.index') }}" class="nav-link"><i class="fas fa-archive"></i>
-                        <span>laporan</span></a>
+                        <span>Laporan</span></a>
                 </li>
             </ul>
 

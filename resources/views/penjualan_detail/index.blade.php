@@ -8,7 +8,6 @@
             .tampil-bayar {
                 font-size: 5em;
                 text-align: center;
-                height: 100px;
             }
 
             .tampil-terbilang {
@@ -109,7 +108,7 @@
                                     <label for="customer" class="col-lg-4 control-label">Customer</label>
                                     <div class="col-lg-8">
                                         <input type="text" name="id_customer" id="id_customer"
-                                            value="{{ Auth::user()->role('admin') ? ($customerActive->id_customer ?? '') : Auth::user()->id_customer }}"
+                                            value="{{ Auth::user()->role('admin') ? $customerActive->id_customer ?? '' : Auth::user()->id_customer }}"
                                             class="form-control">
                                         @role('admin')
                                             <span class="input-group-btn">
@@ -124,15 +123,15 @@
                                 <div class="form-group row">
                                     <label for="diterima" class="col-lg-4 control-label">Diterima</label>
                                     <div class="col-lg-8">
-                                        <input type="number" name="diterima" value="{{ $penjualan->diterima ?? 0 }}" id="diterima"
-                                            class="form-control">
+                                        <input type="number" name="diterima" value="{{ $penjualan->diterima ?? 0 }}"
+                                            id="diterima" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="diskon" class="col-lg-4 control-label">Diskon</label>
                                     <div class="col-lg-8">
-                                        <input type="number" name="diskon" value="{{ $customerActive->diskon ?? 0 }}" id="diskon" class="form-control"
-                                            readonly>
+                                        <input type="number" name="diskon" value="{{ $customerActive->diskon ?? 0 }}"
+                                            id="diskon" class="form-control" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -369,7 +368,6 @@
             }).focus(function() {
                 $(this).select();
             });
-
 
             function pilihProduct(id, kode) {
                 $('#id_product').val(id);

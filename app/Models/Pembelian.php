@@ -22,6 +22,6 @@ class Pembelian extends Model
 
     public function detail_pembelian()
     {
-        return $this->hasMany(PembelianDetail::class, 'pembelian_id');
+        return $this->hasMany(PembelianDetail::class, 'id_pembelian');
     }
 }
