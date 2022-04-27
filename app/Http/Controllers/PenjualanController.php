@@ -162,8 +162,8 @@ class PenjualanController extends Controller
 
         foreach($detail as $item) {
             array_push($data, [
-            'kode_barang' => $item->products[0]['kode_barang'],
-            'nama_barang' => $item->products[0]['nama_barang'],
+            'kode_barang' => $item->products->kode_barang,
+            'nama_barang' => $item->products->nama_barang,
             'harga_jual' => $item->harga_jual,
             'jumlah' => $item->jumlah,
             'subtotal' => $item->subtotal
